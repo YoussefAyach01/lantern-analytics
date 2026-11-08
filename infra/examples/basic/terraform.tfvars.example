@@ -1,0 +1,8 @@
+aws_region        = "eu-west-3"
+ami_id            = "ami-0000000000000000" # look up the current Amazon Linux 2023 AMI for your region
+subnet_id         = "subnet-0000000000000000"
+vpc_id            = "vpc-0000000000000000"
+key_name          = null
+allowed_ssh_cidrs = ["1.2.3.4/32"]
+zone_id           = null
+domain            = null

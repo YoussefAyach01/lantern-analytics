@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.13.3'
+
+      - name: fmt check
+        working-directory: infra
+        run: terraform fmt -check -recursive
+
+      - name: init + validate module
+        working-directory: infra/modules/aws-vm
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: init + validate example
+        working-directory: infra/examples/basic
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      # Runs against mock_provider, so no AWS credentials are needed.
+      - name: terraform test
+        working-directory: infra/tests
+        run: |
+          terraform init -backend=false
+          terraform test

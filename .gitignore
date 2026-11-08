@@ -4,8 +4,10 @@ data
 *.db
 *.db-*
 shots
-.terraform
+.terraform/
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.*
-terraform.tfvars
+*.tfvars
+!*.tfvars.example
+crash.log

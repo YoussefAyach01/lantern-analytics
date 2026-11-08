@@ -97,7 +97,7 @@ See `infra/` for a Terraform module that provisions a single EC2 instance + Elas
 IP + Security Group on AWS (same shape as `../do-vm-terraform`'s DigitalOcean
 module), and `Dockerfile` / `docker-compose.yml` for the container that instance
 would run. **Status: Terraform-validated, not yet applied** — see
-`infra/README` section below and `BUSINESS.md` for why.
+`infra/README.md` and `BUSINESS.md` for why.
 
 ```bash
 docker compose up --build   # local parity check: same image the EC2 user-data runs
