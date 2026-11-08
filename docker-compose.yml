@@ -1,0 +1,18 @@
+# Local parity with how the EC2 instance's user-data runs this same image: one
+# container, a named volume for the SQLite file, env from .env.
+services:
+  app:
+    build: .
+    ports:
+      - '4100:4100'
+    env_file:
+      - .env
+    environment:
+      - PORT=4100
+      - DB_PATH=/app/data/lantern.db
+    volumes:
+      - lantern-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  lantern-data:
