@@ -111,6 +111,10 @@ describe('collection + dashboard end-to-end', () => {
     const html = await dash.text();
     expect(html).toContain('My Blog');
     expect(html).toContain('1'); // at least one visit/pageview rendered somewhere
+    // The CSP is default-src 'self' with no 'unsafe-inline', so any inline style
+    // attribute would be silently dropped by the browser (the chart was blank once).
+    expect(html).not.toContain('style="');
+    expect(html).toMatch(/class="bar h\d+"/);
   });
 
   it('an unknown site token is silently accepted (no 404 oracle for guessing tokens)', async () => {

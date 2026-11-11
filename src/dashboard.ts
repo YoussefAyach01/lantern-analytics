@@ -25,17 +25,16 @@ export function renderDashboard(d: DashboardData): string {
   const maxPv = Math.max(1, ...d.days.map((x) => x.pageviews));
   const bars = d.days
     .map((day) => {
-      const h = Math.max(2, Math.round((day.pageviews / maxPv) * 100));
-      return `<li class="bar" style="height:${h}%" title="${esc(day.day)}: ${day.pageviews} views, ${day.visits} visits"><span class="sr">${esc(day.day)}: ${day.pageviews} views, ${day.visits} visits</span></li>`;
+      // Height as a class, not an inline style: the page ships a strict CSP
+      // (default-src 'self') that blocks style attributes, which left the chart blank.
+      const h = Math.max(5, Math.round((day.pageviews / maxPv) * 20) * 5);
+      return `<li class="bar h${h}" title="${esc(day.day)}: ${day.pageviews} views, ${day.visits} visits"><span class="sr">${esc(day.day)}: ${day.pageviews} views, ${day.visits} visits</span></li>`;
     })
     .join('');
 
   const pathRows = d.paths.length
     ? d.paths
-        .map(
-          (p) =>
-            `<tr><td>${esc(p.path)}</td><td>${p.visits}</td><td>${p.pageviews}</td></tr>`,
-        )
+        .map((p) => `<tr><td>${esc(p.path)}</td><td>${p.visits}</td><td>${p.pageviews}</td></tr>`)
         .join('')
     : '<tr><td colspan="3" class="quiet">No pageviews yet.</td></tr>';
 
